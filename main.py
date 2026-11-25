@@ -21,8 +21,10 @@ LINE = "Tell my human: I finished the task. I just forgot which one."
 # written — no leading/trailing padding and no double spaces — because
 # padding would change the last words the judge reads without changing
 # their visible meaning, and a padded line must fail loudly here rather
-# than silently ship a different entry.
-assert 1 <= len(LINE) <= 200 and LINE.strip() and LINE.isascii() and "\n" not in LINE and LINE == LINE.strip() and "  " not in LINE, "entry line violates the 1-200 character single-line gate"
+# than silently ship a different entry. Carriage returns and tabs are
+# rejected for the same reason: a \r or \t would change what the grader
+# reads without changing the visible meaning of the single line.
+assert 1 <= len(LINE) <= 200 and LINE.strip() and LINE.isascii() and "\n" not in LINE and "\r" not in LINE and "\t" not in LINE and LINE == LINE.strip() and "  " not in LINE, "entry line violates the 1-200 character single-line gate"
 
 def main():
     os.makedirs("/output", exist_ok=True)
